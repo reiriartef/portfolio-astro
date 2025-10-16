@@ -1,0 +1,80 @@
+---
+---
+
+<section id="contact" class="min-h-screen flex flex-col items-center justify-center px-4 py-16 ">
+	<style>
+		/* Ocultar spinners en input number para Chrome, Safari, Edge */
+		input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		/* Ocultar spinners en Firefox */
+		input[type=number] {
+			-moz-appearance: textfield;
+		}
+	</style>
+	<h2 class="text-3xl md:text-5xl font-extrabold text-white mb-8 drop-shadow-xl text-center">
+		Contact Me
+	</h2>
+	<p class="text-white/80 mb-8 text-center max-w-xl">
+		Interested in working together? Fill out the form below to send me a professional offer or inquiry. I’m open to remote, hybrid, or on-site opportunities.
+	</p>
+	<form class="w-full max-w-lg bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 flex flex-col gap-6" autocomplete="off">
+		<div class="flex flex-col gap-2">
+			<label for="name" class="text-white font-semibold">Name</label>
+			<input type="text" id="name" name="name" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Your name" />
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="email" class="text-white font-semibold">Email</label>
+			<input type="email" id="email" name="email" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="your@email.com" />
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="jobtitle" class="text-white font-semibold">Job Title</label>
+			<input type="text" id="jobtitle" name="jobtitle" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Frontend Developer, Tech Lead..." />
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="salary" class="text-white font-semibold">Salary Offer (USD)</label>
+			<input type="number" id="salary" name="salary" min="0" step="100" class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="e.g. 60000" />
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="contract" class="text-white font-semibold">Contract Type</label>
+			<select id="contract" name="contract" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+				<option value="">Select type</option>
+				<option value="Full-time">Full-time</option>
+				<option value="Part-time">Part-time</option>
+				<option value="Contract">Contract</option>
+				<option value="Freelance">Freelance</option>
+				<option value="Project based">Project based</option>
+			</select>
+		</div>
+		<div class="flex flex-col gap-2">
+			<label for="message" class="text-white font-semibold">Message</label>
+			<textarea id="message" name="message" rows="4" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Describe the position, responsibilities, or any details..."></textarea>
+		</div>
+		<button type="submit" class="mt-4 px-8 py-3 rounded-lg bg-blue-700/80 text-white font-bold shadow hover:bg-blue-800/90 transition-colors duration-200 border border-white/20 backdrop-blur-lg">
+			Send Offer
+		</button>
+	</form>
+</section>
+
+<script>
+	document.addEventListener("astro:page-load", ()=>{
+		let form = document.querySelector("form");
+		form?.addEventListener("submit", async (e) => {
+			e.preventDefault();
+			let formData = new FormData(form);
+			console.log(formData)
+			let response = await fetch("/api/mailing", {
+				method: "POST",
+				body: formData
+			});
+			if (response.ok) {
+				alert("Message sent successfully!");
+				form.reset();
+			} else {
+				alert("Error sending message. Please try again later.");
+			}
+		});
+	});
+</script>

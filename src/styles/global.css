@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Evitar parpadeo o contenido oculto por AOS antes de inicializarse */
+[data-aos]:not(.aos-init) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+*,
+html {
+  scroll-behavior: smooth;
+}

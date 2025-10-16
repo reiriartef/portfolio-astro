@@ -1,0 +1,114 @@
+---
+import { Image } from "astro:assets"
+import profileImage from "../../assets/profile.webp"
+---
+
+
+
+<section class="flex flex-col md:flex-row items-center justify-center min-h-screen bg-black px-6 py-16 overflow-hidden relative">
+      <div
+        class="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden shadow-2xl border border-white/20 backdrop-blur-lg bg-white/10 mr-0 md:mr-12 mb-8 md:mb-0"
+        data-aos="fade-up"
+        data-aos-duration="1200"
+        style={{
+          boxShadow:
+            "0 8px 32px 0 rgba(31,38,135,0.37), 0 1.5px 8px 0 rgba(0,0,0,0.25)",
+        }}
+      >
+        <Image
+          src={profileImage}
+          alt="Ricardo Iriarte profile"
+          width={256}
+          height={256}
+          sizes="(min-width: 768px) 256px, 192px"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="w-full h-full object-cover object-center scale-105 hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+
+      <div
+        class="flex flex-col items-center md:items-start text-center md:text-left max-w-3xl rounded-2xl shadow-2xl backdrop-blur-lg bg-white/10 border border-white/20 p-8"
+        data-aos="fade-left"
+        data-aos-duration="1200"
+        style={{
+          boxShadow:
+            "0 8px 32px 0 rgba(31,38,135,0.37), 0 1.5px 8px 0 rgba(0,0,0,0.25)",
+        }}
+      >
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
+          Hi, I'm <span class="text-blue-400">Ricardo Iriarte</span>
+        </h1>
+        <p class="text-lg md:text-2xl text-white/80 mb-6">
+          Software Developer with 4+ years of experience building scalable web
+          applications, APIs, and interactive user interfaces. Passionate about
+          modern technologies, clean code, and delivering impactful digital
+          solutions.
+        </p>
+        <ul class="flex flex-wrap gap-4 mb-8 justify-center md:justify-start">
+          {/* Frontend */}
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            TypeScript
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            React
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            React Native
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            NextJS
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Astro
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Tailwind
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Dart
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Flutter
+          </li>
+          {/* Backend */}
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Node.js
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            NestJS
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            ExpressJS
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Python
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            Flask
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            PostgreSQL
+          </li>
+          <li class="bg-blue-800/40 text-blue-200 px-4 py-2 rounded-full text-sm font-semibold shadow hover:bg-blue-700/60 transition-colors">
+            MongoDB
+          </li>
+        </ul>
+        <div class="flex flex-col md:flex-row gap-3 md:gap-4 w-full mt-2">
+          <a
+            href="#contact"
+            class="w-full md:w-auto px-8 py-3 rounded-full bg-black/40 text-white font-semibold shadow hover:bg-blue-800/60 transition-colors duration-200 border border-white/20 backdrop-blur-lg text-center"
+          >
+            Get in touch
+          </a>
+          <a
+            href="/cv-ricardo-iriarte-en.pdf"
+            download
+            class="w-full md:w-auto px-8 py-3 rounded-full bg-black/40 text-white font-semibold shadow hover:bg-blue-800/60 transition-colors duration-200 border border-white/20 backdrop-blur-lg text-center"
+          >
+            Download Resume
+          </a>
+        </div>
+      </div>
+    </section>

@@ -1,0 +1,136 @@
+---
+const projects = [
+  {
+    title: "Amor Marketing Website",
+    url: "https://amormarketingla.com",
+    description:
+      "Built with Astro using modular architecture and performance-first best practices. The site features secure contract and payment flows directly integrated into the platform, streamlining client onboarding. Its design reflects warmth and energy through clean layout, balanced typography, and strategic color use. Fully responsive and optimized for accessibility and SEO.",
+    // Reemplaza las rutas por tus archivos reales en /public/videos
+    video: {
+      mp4: "https://ik.imagekit.io/pianiesstorage/projects/Grabaci%C3%B3n%20de%20pantalla%202025-10-15%20082554.mp4?updatedAt=1760531172824",
+    },
+  },
+  {
+    title: "Pianies Consignments",
+    url: "https://pianies.com",
+    description: "Led the development of Pianies Consignments, a luxury dress e-commerce platform built with Next.js. Implemented a modern, responsive UI using TailwindCSS and ShadCN components, and architected a type-safe backend with tRPC. Integrated secure Stripe payments to support seamless checkout and seller payouts.",
+    video: {
+      mp4: "https://ik.imagekit.io/pianiesstorage/projects/Grabaci%C3%B3n%20de%20pantalla%202025-10-15%20082413.mp4?updatedAt=1760531084682",
+    },
+  },
+  {
+    title: "Indigo Group Website",
+    url: "https://indigogroups.org",
+    description: "Engineered the official website for Indigo Group (indigogroups.org), a nonprofit organization, using Astro for fast, serverless delivery and optimized SEO. Implemented AOS for smooth scroll-triggered animations, Stripe integration for secure donations, and Nodemailer for automated contact workflows. Delivered a performant, accessible platform aligned with the organization’s mission.",
+    video: {
+      mp4: "https://ik.imagekit.io/pianiesstorage/projects/Grabaci%C3%B3n%20de%20pantalla%202025-10-15%20082732.mp4?updatedAt=1760531688731",
+    },
+  },
+  {
+    title: "LA Latin Conference Landing Page",
+    url: "https://la-lc.indigogroups.org",
+    description: "Designed and developed the landing page for LA Latin Conference 2025, an Indigo Groups initiative aimed at fostering cultural and professional exchange between Mexican and U.S. communities. Built with Astro for speed and scalability, the site features multilingual support, Stripe integration for ticket payments, and a clean, responsive layout tailored for international audiences.",
+    video: {
+      mp4: "https://ik.imagekit.io/pianiesstorage/projects/Grabaci%C3%B3n%20de%20pantalla%202025-10-15%20082732.mp4?updatedAt=1760531688731",
+    },
+  },
+];
+---
+<section
+      id="projects"
+      class="min-h-screen flex flex-col items-center justify-center bg-black px-6 py-16"
+    >
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-10">
+        Public View Projects
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+        {projects.map((project) => (
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group rounded-2xl shadow-2xl backdrop-blur-lg bg-white/10 border border-white/20 overflow-hidden transition-transform hover:scale-105 hover:shadow-blue-700/30 flex flex-col cursor-pointer"
+            style={{
+              boxShadow:
+                "0 8px 32px 0 rgba(31,38,135,0.37), 0 1.5px 8px 0 rgba(0,0,0,0.25)",
+            }}
+          >
+            {project.video ? (
+              <video
+                class="w-full h-48 object-cover object-center transition-transform duration-300 group-hover:scale-105 bg-black"
+                poster={project.video.poster ?? "https://via.placeholder.com/400x220?text=Poster"}
+                preload="none"
+                muted
+                playsinline
+                loop
+                width="400"
+                height="220"
+                data-lazy-video
+                aria-label={`${project.title} demo video`}
+              >
+                <source data-src={project.video.webm} type="video/webm" />
+                <source data-src={project.video.mp4} type="video/mp4" />
+                {/* Fallback para navegadores sin soporte de video */}
+                Tu navegador no soporta el elemento video.
+              </video>
+            ) : (
+              <img
+                src="https://via.placeholder.com/400x220?text=Preview"
+                alt={project.title}
+                loading="lazy"
+                width="400"
+                height="220"
+                class="w-full h-48 object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              />
+            )}
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="text-xl font-bold text-white mb-2">
+                {project.title}
+              </h3>
+              <p class="text-white/80 mb-4 flex-1">{project.description}</p>
+              <span class="inline-block mt-auto px-4 py-2 rounded-full bg-black/40 text-blue-300 font-semibold text-sm shadow backdrop-blur-lg border border-white/10">
+                View Project
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+<script is:inline>
+  // Lazy load real de videos: solo se cargan al entrar en viewport
+  (() => {
+    const videos = Array.from(document.querySelectorAll('video[data-lazy-video]'));
+    if (!videos.length) return;
+
+    const loadVideo = (video) => {
+      // Cambia a 'metadata' para descargar póster y headers sin descargar el archivo completo
+      video.preload = 'metadata';
+      video.querySelectorAll('source').forEach((s) => {
+        const src = s.dataset.src;
+        if (src) s.src = src;
+      });
+      video.load();
+      // Intentar reproducción automática si está permitido (muted + playsinline)
+      const p = video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const video = entry.target;
+            loadVideo(video);
+            observer.unobserve(video);
+          }
+        });
+      }, { rootMargin: '200px 0px' });
+
+      videos.forEach((v) => io.observe(v));
+    } else {
+      // Fallback: cargar inmediatamente
+      videos.forEach(loadVideo);
+    }
+  })();
+</script>
