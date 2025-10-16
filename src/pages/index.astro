@@ -14,7 +14,7 @@ import Contact from "../components/main/contact.astro";
 <Layout>
 	  <HeroSection />
 	  <WorkExperience />
-	  <TechStack />
+	  <TechStack client:only="react" />
 	  <Projects />
 	  <Contact />
 </Layout>
