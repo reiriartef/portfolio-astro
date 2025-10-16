@@ -20,9 +20,8 @@ const transporter = nodemailer.createTransport({
 });
 
 export const POST: APIRoute = async ({ request }) => {
-  const formData = await request.formData();
-  const { name, email, jobtitle, salary, contract, message } =
-    Object.fromEntries(formData);
+  const formData = await request.json();
+  const { name, email, jobtitle, salary, contract, message } = formData;
 
   if (!email || typeof email !== "string") {
     return new Response(JSON.stringify({ error: "Invalid email" }), {
