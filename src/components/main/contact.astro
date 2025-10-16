@@ -20,7 +20,7 @@
 	<p class="text-white/80 mb-8 text-center max-w-xl">
 		Interested in working together? Fill out the form below to send me a professional offer or inquiry. I’m open to remote, hybrid, or on-site opportunities.
 	</p>
-	<form class="w-full max-w-lg bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 flex flex-col gap-6" autocomplete="off">
+	<form id="contact-form" class="w-full max-w-lg bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 flex flex-col gap-6" autocomplete="off">
 		<div class="flex flex-col gap-2">
 			<label for="name" class="text-white font-semibold">Name</label>
 			<input type="text" id="name" name="name" required class="px-4 py-2 rounded-lg bg-black/30 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Your name" />
@@ -56,24 +56,51 @@
 			Send Offer
 		</button>
 	</form>
+	<div id="form-feedback" class="mt-4 w-full max-w-lg text-center"></div>
 </section>
 
 <script>
-	document.addEventListener("astro:page-load", ()=>{
-		let form = document.querySelector("form");
-		form?.addEventListener("submit", async (e) => {
+	document.addEventListener("DOMContentLoaded", () => {
+		const formEl = document.getElementById('contact-form') as HTMLFormElement | null;
+		const feedback = document.getElementById('form-feedback');
+
+		const setFeedback = (msg: string, ok = true) => {
+			if (!feedback) return;
+			feedback.textContent = msg;
+			feedback.className = (ok ? 'text-green-400' : 'text-red-400') + ' font-semibold';
+		};
+
+		formEl?.addEventListener('submit', async (e) => {
 			e.preventDefault();
-			let formData = new FormData(form);
-			console.log(formData)
-			let response = await fetch("/api/mailing", {
-				method: "POST",
-				body: formData
-			});
-			if (response.ok) {
-				alert("Message sent successfully!");
-				form.reset();
-			} else {
-				alert("Error sending message. Please try again later.");
+			const btn = formEl.querySelector('button[type=submit]') as HTMLButtonElement | null;
+			if (btn) btn.disabled = true;
+			setFeedback('Sending...', true);
+
+			const fd = new FormData(formEl);
+			const data = Object.fromEntries(fd.entries());
+
+			try {
+				const res = await fetch('/api/mailing', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+
+				const body = await res.json().catch(() => ({}));
+				if (res.ok) {
+					setFeedback(body.message || 'Message sent successfully!', true);
+					formEl.reset();
+				} else if (res.status === 202) {
+					setFeedback(body.message || 'Message received (no mail sent in dev).', true);
+					formEl.reset();
+				} else {
+					setFeedback(body.error || 'Error sending message. Please try again later.', false);
+				}
+			} catch (err) {
+				console.error(err);
+				setFeedback('Network error. Please try again later.', false);
+			} finally {
+				if (btn) btn.disabled = false;
 			}
 		});
 	});
