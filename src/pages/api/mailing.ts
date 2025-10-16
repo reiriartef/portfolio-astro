@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 
 const EMAIL_ACCOUNT = import.meta.env.EMAIL_ACCOUNT;
 const EMAIL_PASSWORD = import.meta.env.EMAIL_PASSWORD;
+const TO_EMAIL_ACCOUNT = import.meta.env.TO_EMAIL_ACCOUNT;
 
 if (!EMAIL_ACCOUNT || !EMAIL_PASSWORD) {
   throw new Error(
@@ -32,7 +33,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   await transporter.sendMail({
     from: EMAIL_ACCOUNT,
-    to: EMAIL_ACCOUNT,
+    to: TO_EMAIL_ACCOUNT,
     subject: "New Inquiry - You have a new inquiry from your website.",
     text: `${name} - ${email} \nJob Title: ${jobtitle} \nSalary Offer: ${salary} \nContract Type: ${contract} \nMessage: ${message}`,
   });
