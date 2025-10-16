@@ -1,11 +1,4 @@
 ---
-    let hora;
-    const updateHora = () => {
-      const now = new Date();
-      hora = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
-    };
-    updateHora();
-    const interval = setInterval(updateHora, 1000 * 60); // Actualiza cada minuto
 ---
 
 <header
@@ -21,8 +14,8 @@
       >
         {/* Izquierda: Hora y botones de contacto */}
         <div class="flex items-center gap-6 pl-6 py-2">
-          <span class="font-mono bg-black/40 text-nowrap text-sm px-3 py-1 rounded-lg shadow-inner border border-white/20 text-white">
-            {hora}
+          <span id="clock-time" class="font-mono bg-black/40 text-nowrap text-sm px-3 py-1 rounded-lg shadow-inner border border-white/20 text-white">
+            --:--
           </span>
           <div class="flex gap-3">
             <a
@@ -93,3 +86,35 @@
         </nav>
       </div>
     </header>
+<script is:inline>
+  document.addEventListener("astro:page-load", ()=>{
+    (function () {
+        const el = document.getElementById('clock-time');
+        if (!el) return;
+
+        const format = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+
+        const update = () => {
+          const now = new Date();
+          el.textContent = format(now);
+        };
+
+        // Update immediately
+        update();
+
+        // Calculate ms until next minute starts
+        const now = new Date();
+        const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+        // Set a timeout to align to the start of next minute, then set interval every 60s
+        const timeout = setTimeout(() => {
+          update();
+          const interval = setInterval(update, 60 * 1000);
+          // store interval id on element for potential cleanup
+          el._clockInterval = interval;
+        }, msToNextMinute);
+        el._clockTimeout = timeout;
+      })();
+  });
+  
+</script>
