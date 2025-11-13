@@ -111,9 +111,6 @@ const projects = [
         if (src) s.src = src;
       });
       video.load();
-      // Intentar reproducción automática si está permitido (muted + playsinline)
-      const p = video.play();
-      if (p && typeof p.catch === 'function') p.catch(() => {});
     };
 
     if ('IntersectionObserver' in window) {
